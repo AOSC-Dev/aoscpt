@@ -16,7 +16,7 @@ use crate::{error::OutputError, subcommand::utils::handle_no_result};
 
 use crate::args::CliExecuter;
 
-use super::utils::{auth_config, is_terminal};
+use super::utils::auth_config;
 
 #[derive(Debug, Args)]
 pub struct Download {
@@ -61,7 +61,7 @@ impl CliExecuter for Download {
         let (tx, rx) = unbounded();
 
         thread::spawn(move || {
-            let mut pb: Box<dyn RenderDownloadProgress> = if no_progress || !is_terminal() {
+            let mut pb: Box<dyn RenderDownloadProgress> = if no_progress {
                 Box::new(NoProgressBar::default())
             } else {
                 Box::new(OmaMultiProgressBar::default())
